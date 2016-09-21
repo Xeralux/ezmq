@@ -114,5 +114,7 @@ processing(do, _, _MqSState, _State) ->
 
 check_message_structure({_Id, [{normal, <<>>}|_]}) ->
     ok;
+check_message_structure({_Id, [{normal,_},{normal, <<>>}|_]}) ->
+    ok;
 check_message_structure(_) ->
     {error, invalid_message}.
