@@ -293,6 +293,9 @@ handle_call({send, Msg}, From, State) ->
         {queue, Action} ->
             %%TODO: HWM and swap to disk....
             State1 = State#ezmq_socket{send_q = State#ezmq_socket.send_q ++ [Msg]},
+            Len = length(State#ezmq_socket.send_q) + 1,
+            LenRec = length(State#ezmq_socket.recv_q),
+            lager:debug("ezmq actual send queue length: ~p and reply queue blocked by send: ~p~n",[Len, LenRec]),
             State2 = ezmq_socket_fsm:do(queue_send, State1),
             case Action of
                 return ->
